@@ -146,7 +146,7 @@ public:
     return no;
   }
 
-private:
+protected:
   #ifdef __GNUC__
   constexpr
   #endif
