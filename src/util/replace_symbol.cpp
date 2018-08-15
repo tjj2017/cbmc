@@ -197,6 +197,28 @@ bool replace_symbolt::replace(typet &dest) const
       result=false;
     }
   }
+  else if(dest.id() == ID_union_tag)
+  {
+    type_mapt::const_iterator it =
+      type_map.find(to_union_tag_type(dest).get_identifier());
+
+    if(it != type_map.end())
+    {
+      dest = it->second;
+      result = false;
+    }
+  }
+  else if(dest.id() == ID_struct_tag)
+  {
+    type_mapt::const_iterator it =
+      type_map.find(to_struct_tag_type(dest).get_identifier());
+
+    if(it != type_map.end())
+    {
+      dest = it->second;
+      result = false;
+    }
+  }
   else if(dest.id()==ID_array)
   {
     array_typet &array_type=to_array_type(dest);
