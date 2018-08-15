@@ -800,12 +800,24 @@ void c_typecheck_baset::typecheck_compound_type(struct_union_typet &type)
     }
   }
 
-  symbol_typet symbol_type(identifier);
-  symbol_type.add_source_location()=type.source_location();
+  if(type.id() == ID_union)
+  {
+    union_tag_typet tag_type(identifier);
+    tag_type.add_source_location() = type.source_location();
 
-  c_qualifierst original_qualifiers(type);
-  type.swap(symbol_type);
-  original_qualifiers.write(type);
+    c_qualifierst original_qualifiers(type);
+    type.swap(tag_type);
+    original_qualifiers.write(type);
+  }
+  else
+  {
+    symbol_typet symbol_type(identifier);
+    symbol_type.add_source_location() = type.source_location();
+
+    c_qualifierst original_qualifiers(type);
+    type.swap(symbol_type);
+    original_qualifiers.write(type);
+  }
 }
 
 void c_typecheck_baset::typecheck_compound_body(
