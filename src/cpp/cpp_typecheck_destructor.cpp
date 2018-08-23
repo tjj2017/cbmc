@@ -148,7 +148,7 @@ codet cpp_typecheckt::dtor(const symbolt &symbol)
     disable_access_control = disabled_access_control;
 
     if(dtor_code.has_value())
-      block.move_to_operands(dtor_code.value());
+      block.move(dtor_code.value());
   }
 
   const irept::subt &bases=symbol.type.find(ID_bases).get_sub();
@@ -173,7 +173,7 @@ codet cpp_typecheckt::dtor(const symbolt &symbol)
     disable_access_control = disabled_access_control;
 
     if(dtor_code.has_value())
-      block.move_to_operands(dtor_code.value());
+      block.move(dtor_code.value());
   }
 
   return block;

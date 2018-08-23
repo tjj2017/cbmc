@@ -135,7 +135,7 @@ bool jsil_entry_point(
     call_init.add_source_location()=symbol.location;
     call_init.function()=init_it->second.symbol_expr();
 
-    init_code.move_to_operands(call_init);
+    init_code.move(call_init);
   }
 
   // build call to main function
@@ -145,7 +145,7 @@ bool jsil_entry_point(
   call_main.function()=symbol.symbol_expr();
   call_main.function().add_source_location()=symbol.location;
 
-  init_code.move_to_operands(call_main);
+  init_code.move(call_main);
 
   // add "main"
   symbolt new_symbol;
