@@ -97,7 +97,7 @@ optionalt<java_bytecode_parse_treet> java_class_loadert::get_class_from_jar(
   debug()
     << "Getting class `" << class_name << "' from JAR " << jar_file << eom;
 
-  auto data = jar_pool(jar_file).get_entry(class_name_to_file(class_name));
+  auto data = jar_pool(jar_file).get_entry(class_name_to_jar_file(class_name));
 
   if(!data.has_value())
     return {};
@@ -136,7 +136,7 @@ java_class_loadert::get_parse_tree(
   PRECONDITION(parse_trees.empty());
 
   // do we refuse to load?
-  if(!class_loader_limit.load_class_file(class_name_to_file(class_name)))
+  if(!class_loader_limit.load_class_file(class_name_to_jar_file(class_name)))
   {
     debug() << "not loading " << class_name << " because of limit" << eom;
     java_bytecode_parse_treet parse_tree;
@@ -162,7 +162,7 @@ java_class_loadert::get_parse_tree(
     case classpath_entryt::DIRECTORY:
       {
         // Look in the given directory
-        const std::string class_file = class_name_to_file(class_name);
+        const std::string class_file = class_name_to_os_file(class_name);
         const std::string full_path =
 #ifdef _WIN32
           cp_entry.path + '\\' + class_file;
@@ -323,7 +323,25 @@ std::string java_class_loadert::file_to_class_name(const std::string &file)
 /// file_to_class_name.
 /// \param class_name: the name of the class
 /// \return the class name converted to file name
-std::string java_class_loadert::class_name_to_file(const irep_idt &class_name)
+std::string java_class_loadert::class_name_to_jar_file(const irep_idt &class_name)
+{
+  std::string result=id2string(class_name);
+
+  // dots (package name separators) to slash
+  for(std::string::iterator it=result.begin(); it!=result.end(); it++)
+    if(*it=='.')
+      *it='/';
+
+  // add .class suffix
+  result+=".class";
+
+  return result;
+}
+
+/// Convert a class name to a file name, with OS-dependent syntax
+/// \param class_name: the name of the class
+/// \return the class name converted to file name
+std::string java_class_loadert::class_name_to_os_file(const irep_idt &class_name)
 {
   std::string result=id2string(class_name);
 

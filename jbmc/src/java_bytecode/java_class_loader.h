@@ -91,7 +91,8 @@ public:
   void add_classpath_entry(const std::string &);
 
   static std::string file_to_class_name(const std::string &);
-  static std::string class_name_to_file(const irep_idt &);
+  static std::string class_name_to_os_file(const irep_idt &);
+  static std::string class_name_to_jar_file(const irep_idt &);
 
   std::vector<irep_idt> load_entire_jar(const std::string &jar_path);
 
