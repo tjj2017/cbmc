@@ -786,7 +786,7 @@ void bv_pointerst::do_postponed(
     {
       const exprt &expr=*it;
 
-      mp_integer object_size;
+      exprt object_size;
 
       if(expr.id()==ID_symbol)
       {
@@ -798,8 +798,8 @@ void bv_pointerst::do_postponed(
         if(size_expr.is_nil())
           continue;
 
-        if(to_integer(size_expr, object_size))
-          continue;
+        object_size =
+          typecast_exprt::conditional_cast(size_expr, postponed.expr.type());
       }
       else
         continue;
@@ -813,12 +813,13 @@ void bv_pointerst::do_postponed(
       bvt saved_bv=postponed.op;
       saved_bv.erase(saved_bv.begin(), saved_bv.begin()+offset_bits);
 
+      bvt size_bv = convert_bv(object_size);
+
       POSTCONDITION(bv.size()==saved_bv.size());
       PRECONDITION(postponed.bv.size()>=1);
+      PRECONDITION(size_bv.size() == postponed.bv.size());
 
       literalt l1=bv_utils.equal(bv, saved_bv);
-
-      bvt size_bv=bv_utils.build_constant(object_size, postponed.bv.size());
       literalt l2=bv_utils.equal(postponed.bv, size_bv);
 
       prop.l_set_to(prop.limplies(l1, l2), true);
