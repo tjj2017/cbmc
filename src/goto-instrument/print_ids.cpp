@@ -252,7 +252,9 @@ void aliasest::operator()(const goto_modelt &goto_model)
     }
   }
 
-  // root map
+  // build root map
+  root_map[uuf.size()];
+
   for(std::size_t i=0; i<uuf.size(); i++)
     if(!uuf.is_root(i))
       root_map[uuf.find(i)].insert(i);  
