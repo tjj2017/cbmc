@@ -237,6 +237,13 @@ int goto_instrument_parse_optionst::doit()
     if(cmdline.isset("print-ids"))
     {
       print_ids(goto_model);
+      #if 0
+      show_goto_functions(
+        goto_model,
+        get_message_handler(),
+        ui_message_handler.get_ui(),
+        false);
+      #endif
       return CPROVER_EXIT_SUCCESS;
     }
 
